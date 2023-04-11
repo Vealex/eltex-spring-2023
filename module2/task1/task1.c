@@ -7,7 +7,9 @@ void helloSpeech();
 void setOptions(int* options);
 int getNumber(int mode);
 int runGame(int number, int try_count);
-int calcPoints(int win, int mode, int try_count);
+int setDebt(int points);
+void printTips(int orig_num, int player_num);
+int calcPoints(int try_count, int total_try_count, int mode, int debt);
 int continueDialog();
 void goodbyeSpeech(int coins);
 void clearCharInBuffer();
@@ -28,8 +30,9 @@ void play() {
 	while (playing) {
 		if (playing == 2) setOptions(options);
 		int number = getNumber(options[0]);
+		int debt = setDebt(points);
 		int win = runGame(number, options[1]);
-		points += calcPoints(win, options[0], options[1]);
+		points += calcPoints(win, options[0], debt);
 		playing = continueDialog();
 	}
 	goodbyeSpeech(coins);
@@ -76,15 +79,53 @@ int runGame(int number, int try_count) {
 			printf("Ты опять выходишь на связь, тестер?\n");
 			clearCharInBuffer();
 			i--;
-		}
-		if (player_num == number) {
+		} else if (player_num == number) {
 			printf("Поздравляем, ты угадал!\n");
-			win = 1;
+			win = i + 1;
 			break;
+		} else {
+			printTips(number, player_num);
 		}
 	}
 	if (!win) printf("Ты проиграл. К сожалению, интуиция у тебя не очень развита...\n");
 	return win;
+}
+
+int setDebt(int points) {
+	int debt = 0;
+	printf("У вас имеется %d очков. Желаете ли сделать ставку? [0 - нет, N - ставка]: ", points);
+	while (!scanf("%d", &debt) || debt < 0) {
+		printf("Да что с тобой не так? Играй уже по правилам!\n");
+		clearCharInBuffer();
+		printf("У вас имеется %d очков. Желаете ли сделать ставку? [0 - нет, N - ставка]: ", points);
+
+	}
+	return debt;
+}
+
+void printTips(int orig_num, int player_num) {
+	int diff = orig_num - player_num;
+	
+	if (diff < 0) {
+		diff *= -1;
+		printf("Загаданное число меньше\n");
+	} else {
+		printf("Загаданное число больше\n");
+	}
+
+	if (diff > 80) {
+		printf("Вообще мороз...\n");
+	} else if (diff > 30) {
+		printf("Холодно\n");
+	} else if (diff > 15) {
+		printf("Тепло\n");
+	} else if (diff > 10) {
+		printf("Теплее\n");
+	} else if (diff > 5) {
+		printf("Вообще жара!\n");
+	} else {
+		printf("Темпиратура как на солнце\n");
+	}
 }
 
 int calcPoints(int win, int mode, int try_count) {
@@ -102,7 +143,7 @@ int continueDialog() {
 		clearCharInBuffer();
 	}
 	if (continueAgree) {
-		printf("Хочешь изменить настройки? [0 - нет, 1 - да]");
+		printf("Хочешь изменить настройки? [0 - нет, 1 - да]: ");
 		while (!scanf("%d", &resetOptions) || resetOptions < 0 || resetOptions > 1) {
 			printf("Честно говоря, такая одержимость багами пугает...\n");
 			printf("Хочешь изменить настройки? [0 - нет, 1 - да]: ");
