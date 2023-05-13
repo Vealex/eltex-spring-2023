@@ -32,8 +32,8 @@ void printBack(Node **list);
 void randomFill(Node **list, size_t N);
 
 void swap(Node **list, size_t a, size_t b);
-
 void sortUP(Node **list);
+void sortDOWN(Node **list);
 
 #endif  // LIST_H
 

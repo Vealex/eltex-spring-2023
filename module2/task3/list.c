@@ -145,15 +145,16 @@ void printFront(Node **list) {
 		printf("%s -> ", iter->buf);
 		iter = iter->next;
 	}
-	printf("\n");
+	printf("NULL\n");
 }
 
 void printBack(Node **list) {
 	Node *iter = *list;
 	Node *last = NULL;
+	printf ("NULL");
 	while (iter != last) {
 		while (iter->next != last) iter = iter->next;
-		printf("%s <- ", iter->buf);
+		printf(" <- %s", iter->buf);
 		last = iter;
 		iter = *list;
 	}
@@ -202,14 +203,14 @@ void swap(Node **list, size_t a, size_t b) {
 				B = B->next;
 			}
 			if (i == b && B != NULL) {
-				//Node *A = prevA->next;
-				//Node *nextA = A->next;
-				//Node *B = prevB->next;
-				//Node *nextB = B->next;
-				//A->next = nextB;
-				//B->next = nextA;
-				//prevA->next = B;
-				//prevB->next = A;
+				/*Node *A = prevA->next;
+				Node *nextA = A->next;
+				Node *B = prevB->next;
+				Node *nextB = B->next;
+				A->next = nextB;
+				B->next = nextA;
+				prevA->next = B;
+				prevB->next = A;*/
 				char *tmp = A->buf;
 				A->buf = B->buf;
 				B->buf = tmp;
@@ -235,8 +236,36 @@ void sortUP(Node **list) {
 				i++;
 			}
 			//printFront(list);
-			printf("%d\n", swapCount);
+			//printf("%d\n", swapCount);
 		} while (swapCount > 0);
+	}
+}
+
+void sortDOWN(Node **list) {
+	int swapGap = 0;
+	Node *iter = *list;
+	while (iter != NULL) {
+		swapGap++;
+		iter = iter->next;
+	}
+	while (swapGap > 0) {
+		swapGap = (int)((double)swapGap / 1.247);
+		//printf("%d\n", swapGap);
+		iter = *list;
+		size_t i = 0;
+		while (iter->next != NULL) {
+			Node *nextIter = iter;
+			size_t j = i;
+			while (nextIter->next != NULL && j != i + swapGap - 1) {
+				nextIter = nextIter->next;
+				j++;
+			}
+			if (j == i + swapGap - 1)
+				if (strcmp(iter->buf, nextIter->buf) < 0)
+					swap(list, i, j);
+			iter = iter->next;
+			i++;
+		}
 	}
 }
 

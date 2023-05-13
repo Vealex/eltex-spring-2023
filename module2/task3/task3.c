@@ -2,12 +2,13 @@
 #include "list.h"
 
 int main() {
+	Node *list = NULL;
+
 	char str1[] = "string1";
 	char str2[] = "string2";
 	char str3[] = "string3";
-	Node *list = NULL;
 	
-	printf("Insertion----------\n");
+	printf("Insertion----------\n\n");
 
 	pushBack(&list, str1);
 	printFront(&list);
@@ -24,7 +25,7 @@ int main() {
 	printBack(&list);
 	printf("\n");
 
-	printf("Editing------------\n");
+	printf("Editing------------\n\n");
 
 	printf("%s\n", editFront(&list, "string22"));
 	printFront(&list);
@@ -41,7 +42,7 @@ int main() {
 	printBack(&list);
 	printf("\n");
 
-	printf("Exsertion----------\n");
+	printf("Exsertion----------\n\n");
 
 	char *strtmp = pop(&list, 0);
 	printf("%s\n", strtmp);
@@ -61,13 +62,21 @@ int main() {
 	printBack(&list);
 	printf("\n");
 
-	printf("Filling-------------\n");
+	printf("Extended functional:\n\n");
 
-	randomFill(&list, 5);
+	randomFill(&list, 10);
 	printFront(&list);
+	printf("\n");
 
 	sortUP(&list);
 	printFront(&list);
+	printf("\n");
+
+	sortDOWN(&list);
+	printFront(&list);
+	printf("\n");
+
+	clear(&list);
 	
 	return 0;
 }
